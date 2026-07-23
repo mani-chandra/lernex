@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MedicalPaymentStatus {
+  pending_payment
+  paid
+  failed
+}
+
+enum CounselingStatus {
+  not_scheduled
+  scheduled
+  completed
+}
+
+enum NeetCategory {
+  General
+  OBC
+  SC
+  ST
+  EWS
+}
+
+model BtechApplication {
+  id                 String   @id @default(cuid())
+  referenceId        String   @unique
+  fullName           String
+  email              String
+  phone              String
+  board              String
+  yearOfPassing      Int
+  percentageOrCgpa   String
+  entranceExamName   String?
+  entranceExamScore  String?
+  city               String
+  state              String
+  createdAt          DateTime @default(now())
+
+  @@index([email])
+  @@index([phone])
+}
+
+model MedicalApplication {
+  id                 String               @id @default(cuid())
+  referenceId        String               @unique
+  fullName           String
+  email              String
+  phone              String
+  dateOfBirth        DateTime
+  gender             String
+  addressLine1       String
+  city               String
+  state              String
+  pincode            String
+  neetScore          Int
+  neetRollNumber     String
+  neetYear           Int
+  category           NeetCategory
+  guardianName       String
+  guardianPhone      String
+  status             MedicalPaymentStatus @default(pending_payment)
+  razorpayOrderId    String?              @unique
+  razorpayPaymentId  String?
+  amountPaise        Int                  @default(500000)
+  paidAt             DateTime?
+  counselingStatus   CounselingStatus     @default(not_scheduled)
+  counselingNotes    String?
+  scheduledAt        DateTime?
+  createdAt          DateTime             @default(now())
+
+  @@index([email])
+  @@index([phone])
+  @@index([status])
+  @@index([counselingStatus])
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
