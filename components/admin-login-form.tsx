@@ -30,7 +30,9 @@ export function AdminLoginForm() {
     setLoading(false);
 
     if (result?.error) {
-      setError("Invalid email or password");
+      setError(
+        "Invalid email or password. If this is a new install, ensure Postgres is running and you ran db:migrate and db:seed."
+      );
       return;
     }
 

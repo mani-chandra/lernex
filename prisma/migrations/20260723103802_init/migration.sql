@@ -1,6 +1,3 @@
--- CreateSchema
-CREATE SCHEMA IF NOT EXISTS "public";
-
 -- CreateEnum
 CREATE TYPE "MedicalPaymentStatus" AS ENUM ('pending_payment', 'paid', 'failed');
 
@@ -100,4 +97,3 @@ CREATE INDEX "MedicalApplication_counselingStatus_idx" ON "MedicalApplication"("
 
 -- CreateIndex
 CREATE UNIQUE INDEX "AdminUser_email_key" ON "AdminUser"("email");
-

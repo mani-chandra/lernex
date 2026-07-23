@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/button";
 import { FormField, inputClassName, selectClassName } from "@/components/form-field";
+import { StateCityFields } from "@/components/state-city-fields";
 import { openRazorpayCheckout } from "@/components/razorpay-checkout";
 import { siteConfig } from "@/lib/site-config";
 
@@ -146,12 +147,7 @@ export function MedicalApplicationForm() {
             className={`${inputClassName} sm:col-span-2`}
           />
         </FormField>
-        <FormField label="City" htmlFor="city">
-          <input id="city" name="city" required className={inputClassName} />
-        </FormField>
-        <FormField label="State" htmlFor="state">
-          <input id="state" name="state" required className={inputClassName} />
-        </FormField>
+        <StateCityFields />
         <FormField label="Pincode" htmlFor="pincode">
           <input
             id="pincode"

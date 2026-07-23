@@ -3,7 +3,9 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/button";
+import { BoardSelectField } from "@/components/board-select-field";
 import { FormField, inputClassName } from "@/components/form-field";
+import { StateCityFields } from "@/components/state-city-fields";
 
 export function BtechApplicationForm() {
   const router = useRouter();
@@ -67,15 +69,8 @@ export function BtechApplicationForm() {
             className={inputClassName}
           />
         </FormField>
-        <FormField label="City" htmlFor="city">
-          <input id="city" name="city" required className={inputClassName} />
-        </FormField>
-        <FormField label="State" htmlFor="state">
-          <input id="state" name="state" required className={inputClassName} />
-        </FormField>
-        <FormField label="12th board" htmlFor="board">
-          <input id="board" name="board" required className={inputClassName} />
-        </FormField>
+        <StateCityFields />
+        <BoardSelectField />
         <FormField label="Year of passing" htmlFor="yearOfPassing">
           <input
             id="yearOfPassing"

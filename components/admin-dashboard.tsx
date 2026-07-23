@@ -43,8 +43,15 @@ export function AdminDashboard() {
       const params = new URLSearchParams();
       if (statusFilter) params.set("status", statusFilter);
       const res = await fetch(`/api/admin/applications/medical?${params}`);
+      if (res.status === 401) {
+        setError("Session expired. Please sign in again from /admin/login.");
+        setLoading(false);
+        return;
+      }
       if (!res.ok) {
-        setError("Failed to load medical applications");
+        setError(
+          "Could not load applications. Check that the database is running and DATABASE_URL is set."
+        );
         setLoading(false);
         return;
       }
@@ -62,8 +69,15 @@ export function AdminDashboard() {
       const params = new URLSearchParams();
       if (search.trim()) params.set("q", search.trim());
       const res = await fetch(`/api/admin/applications/btech?${params}`);
+      if (res.status === 401) {
+        setError("Session expired. Please sign in again from /admin/login.");
+        setLoading(false);
+        return;
+      }
       if (!res.ok) {
-        setError("Failed to load B.Tech applications");
+        setError(
+          "Could not load applications. Check that the database is running and DATABASE_URL is set."
+        );
         setLoading(false);
         return;
       }
@@ -157,21 +171,29 @@ export function AdminDashboard() {
               </tr>
             </thead>
             <tbody>
-              {medical.map((row) => (
-                <tr key={row.id} className="border-b last:border-0">
-                  <td className="px-3 py-2 font-mono text-xs">{row.referenceId}</td>
-                  <td className="px-3 py-2">{row.fullName}</td>
-                  <td className="px-3 py-2">{row.phone}</td>
-                  <td className="px-3 py-2">{row.neetScore}</td>
-                  <td className="px-3 py-2">{row.status}</td>
-                  <td className="px-3 py-2">{row.counselingStatus}</td>
-                  <td className="px-3 py-2">
-                    <Link href={`/admin/medical/${row.id}`} className="text-teal-800 underline">
-                      View
-                    </Link>
+              {medical.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="px-3 py-8 text-center text-zinc-500">
+                    No medical applications yet.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                medical.map((row) => (
+                  <tr key={row.id} className="border-b last:border-0">
+                    <td className="px-3 py-2 font-mono text-xs">{row.referenceId}</td>
+                    <td className="px-3 py-2">{row.fullName}</td>
+                    <td className="px-3 py-2">{row.phone}</td>
+                    <td className="px-3 py-2">{row.neetScore}</td>
+                    <td className="px-3 py-2">{row.status}</td>
+                    <td className="px-3 py-2">{row.counselingStatus}</td>
+                    <td className="px-3 py-2">
+                      <Link href={`/admin/medical/${row.id}`} className="text-teal-800 underline">
+                        View
+                      </Link>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -190,17 +212,25 @@ export function AdminDashboard() {
               </tr>
             </thead>
             <tbody>
-              {btech.map((row) => (
-                <tr key={row.id} className="border-b last:border-0">
-                  <td className="px-3 py-2 font-mono text-xs">{row.referenceId}</td>
-                  <td className="px-3 py-2">{row.fullName}</td>
-                  <td className="px-3 py-2">{row.email}</td>
-                  <td className="px-3 py-2">{row.phone}</td>
-                  <td className="px-3 py-2">
-                    {row.city}, {row.state}
+              {btech.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="px-3 py-8 text-center text-zinc-500">
+                    No B.Tech applications yet.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                btech.map((row) => (
+                  <tr key={row.id} className="border-b last:border-0">
+                    <td className="px-3 py-2 font-mono text-xs">{row.referenceId}</td>
+                    <td className="px-3 py-2">{row.fullName}</td>
+                    <td className="px-3 py-2">{row.email}</td>
+                    <td className="px-3 py-2">{row.phone}</td>
+                    <td className="px-3 py-2">
+                      {row.city}, {row.state}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
